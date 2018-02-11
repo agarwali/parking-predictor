@@ -36,10 +36,10 @@
         <h4 class="modal-title" id="myModalLabel">Parking Detail</h4>
       </div>
       <div class="modal-body">
-          <b>Parking Name:</b> <div id="parkingName"></div>
-          <b>Address:</b> <div id="parkingAddress"> </div>
-          <b>Space Left:</b> <div id="spaceLeft"></div>
-          <b>Probability:</b> <div id="prob"> </div>
+          <b>Parking Name:</b> <div id="parkingName" style="display: inline"></div> <br/>
+          <b>Address:</b> <div id="parkingAddress" style="display: inline"> </div><br/>
+          <b>Space Left:</b> <div id="spaceLeft" style="display: inline"></div><br/>
+          <b>Probability:</b> <div id="prob" style="display: inline"> </div>
 
       </div>
       <div class="modal-footer">
@@ -89,12 +89,12 @@
                             }
 
     // https://maps.googleapis.com/maps/api/directions/json?origin=38.200488,-85.671079&destination=38.253153,-85.753847&key=AIzaSyCKXkCv4QX6YSk_1m4AurUSiKu5wSD3O2A
-
+                            console.log(item);
                             google.maps.event.addListener(marker, 'click', function() {
                                 $('#spaceLeft').text(item.parkingData.left);
                                 $('#prob').text(item.parkingData.prob);
-                               // $('#parkingaddress').text(item.address);
-                               // $('#parkingname').text(item.name);
+                                $('#parkingAddress').text(item.address);
+                                $('#parkingName').text(item.name);
                                 $('#myModal').modal('show')
                             });
                             //Markers[locations[i][4]] = marker;

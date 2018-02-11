@@ -8,6 +8,7 @@ from functions import *
 
 PARKING_API_KEY = 'AIzaSyDg7g9prn5vV3uNTA9O-GxACZFK1FSCCQg'
 DIST_API_KEY = 'AIzaSyDdgl0atVsTB3mod1APbCzBzzOqr6jwmQU'
+DIST_API_KEY_NEW = 'AIzaSyBHO2sxnyIOoWQ8YLXlqKdXieOMZwGKgqk'
 radius = '1000'
 
 
@@ -19,7 +20,7 @@ def get_prob_taken(timeDiff):
 
 
 def get_time_away(carLoc, lotLoc):
-    url = 'https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins='+carLoc[0]+','+carLoc[1]+'&destinations='+lotLoc[0]+','+lotLoc[1]+'&key='+DIST_API_KEY
+    url = 'https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins='+carLoc[0]+','+carLoc[1]+'&destinations='+lotLoc[0]+','+lotLoc[1]+'&key='+DIST_API_KEY_NEW
     r = requests.get(url)
     data = json.loads(r.content)
     return data['rows'][0]['elements'][0]['duration']['value']
