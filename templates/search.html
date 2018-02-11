@@ -36,8 +36,11 @@
         <h4 class="modal-title" id="myModalLabel">Parking Detail</h4>
       </div>
       <div class="modal-body">
-        Space Left: <div id="spaceLeft"></div>
-        Probability:<div id="prob"> </div>
+          <b>Parking Name:</b> <div id="parkingName"></div>
+          <b>Address:</b> <div id="parkingAddress"> </div>
+          <b>Space Left:</b> <div id="spaceLeft"></div>
+          <b>Probability:</b> <div id="prob"> </div>
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -45,8 +48,6 @@
     </div>
   </div>
 </div>
-
-
     <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKXkCv4QX6YSk_1m4AurUSiKu5wSD3O2A&callback=initMap"></script>
     <script>
@@ -70,17 +71,30 @@
                             zoom: 15,
                             center: myLatLng1
                         });
+                        data.push({'geometry':{'location':myLatLng1}});
 
                         $.each(data, function (i, item) {
-                            var marker = new google.maps.Marker({
-                                position: new google.maps.LatLng(item.geometry.location.lat, item.geometry.location.lng),
-                                map: map,
-                                icon: 'https://maps.google.com/mapfiles/kml/shapes/parking_lot_maps.png'
-                            });
+                            if((item.geometry.location.lat === lat) && (item.geometry.location.lng === lon)){
+                                var marker2 = new google.maps.Marker({
+                                    position: new google.maps.LatLng(item.geometry.location.lat, item.geometry.location.lng),
+                                    map: map,
+                                    icon: 'https://www.google.com/mapfiles/marker.png'
+                                });
+                            }else{
+                                 var marker = new google.maps.Marker({
+                                     position: new google.maps.LatLng(item.geometry.location.lat, item.geometry.location.lng),
+                                     map: map,
+                                     icon: 'https://maps.google.com/mapfiles/kml/shapes/parking_lot_maps.png'
+                                 });
+                            }
+
+    // https://maps.googleapis.com/maps/api/directions/json?origin=38.200488,-85.671079&destination=38.253153,-85.753847&key=AIzaSyCKXkCv4QX6YSk_1m4AurUSiKu5wSD3O2A
 
                             google.maps.event.addListener(marker, 'click', function() {
                                 $('#spaceLeft').text(item.parkingData.left);
                                 $('#prob').text(item.parkingData.prob);
+                               // $('#parkingaddress').text(item.address);
+                               // $('#parkingname').text(item.name);
                                 $('#myModal').modal('show')
                             });
                             //Markers[locations[i][4]] = marker;
@@ -90,7 +104,7 @@
 
                 })
               .fail(function(err) {
-                console.log(err);
+                  console.log(err);
               });
             };
 
