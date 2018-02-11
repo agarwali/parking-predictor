@@ -1,8 +1,15 @@
-from flask import Flask
+from flask import Flask, request, render_template
 app = Flask(__name__)
 
 from api import *
 
-@app.route('/')
-def get_data():
-    return json.dumps(parking_near_zipcode('38.219053699999996', '-85.7532753'))
+@app.route('/', methods=['GET', 'POST'])
+def read_html():
+    if request.method=='GET':
+        return render_template("index.html")
+    if request.method == 'POST':
+        data = request.form
+        # print(data['lon'], data['lat'])
+
+        parkingdata = parking_near_zipcode(data['lon'], data['lat'])
+        return render_template("search.html", parkingdata=parkingdata)

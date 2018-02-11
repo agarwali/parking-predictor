@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Parking Space Finder</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+  <div class="page-header">
+    <h1>Parking Space Finder</h1>
+    <form method="post" action="/">
+        <input type="text" id="lon" name="lon">
+        <input type="text" id="lat" name="lat">
+        <button type="submit">Send</button>
+      </form>
+  </div>
+  <div class="row">
+    <div class="col-sm-8">Here goes the Google map</div>
+    <div class="col-sm-3" style="border-left: 1px solid #ddd;">List of Parking areas</div>
+  </div>
+</div>
+
+<script>
+var lat = document.getElementById("lat");
+var lon = document.getElementById("lon");
+
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+        lat.innerHTML = "Geolocation is not supported by this browser.";
+    }
+}
+
+function showPosition(position) {
+    lat.value = position.coords.latitude;
+    lon.value = position.coords.longitude;
+}
+getLocation();
+</script>
+
+</body>
+</html>
