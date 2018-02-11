@@ -3,8 +3,12 @@
   <head>
       <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
       <meta charset="utf-8">
-      <title>Simple markers</title>
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <title>Parking Space Finder</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <style>
           /* Always set the map height explicitly to define the size of the div
            * element that contains the map. */
@@ -19,14 +23,80 @@
           }
         </style>
   </head>
-  <body>
+  <body style="width: 1024px">
+  <div id="out"></div>
     <div id="map"></div>
-    <div id="lon"></div>
+
+    <div id="map-canvas"></div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Parking Detail</h4>
+      </div>
+      <div class="modal-body">
+        Space Left: <div id="spaceLeft"></div>
+        Probability:<div id="prob"> </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKXkCv4QX6YSk_1m4AurUSiKu5wSD3O2A&callback=initMap"></script>
     <script>
 
+            function initMap() {
+
+                //var Markers = {};
+
+                var tryAPIGeolocation = function() {
+                    var url = "https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyDCa1LUe1vOczX1hO_iGYgyo8p_jYuGOPU"
+                    $.post(url, function(success) {
+                        var lat = success.location.lat;
+                        var lon = success.location.lng;
+
+                var myLatLng1 = {lat: lat, lng: lon};
+
+
+                $.getJSON("/parkingData?lat=" + lat + "&lng=" + lon)
+                    .done(function (data) {
+                        var map = new google.maps.Map(document.getElementById('map'), {
+                            zoom: 15,
+                            center: myLatLng1
+                        });
+
+                        $.each(data, function (i, item) {
+                            var marker = new google.maps.Marker({
+                                position: new google.maps.LatLng(item.geometry.location.lat, item.geometry.location.lng),
+                                map: map,
+                                icon: 'https://maps.google.com/mapfiles/kml/shapes/parking_lot_maps.png'
+                            });
+
+                            google.maps.event.addListener(marker, 'click', function() {
+                                $('#spaceLeft').text(item.parkingData.left);
+                                $('#prob').text(item.parkingData.prob);
+                                $('#myModal').modal('show')
+                            });
+                            //Markers[locations[i][4]] = marker;
+                        });
+
+                    });
+
+                })
+              .fail(function(err) {
+                console.log(err);
+              });
+            };
+
+            tryAPIGeolocation();
+            }
+
     </script>
-    <!--<script async defer-->
-    <!--src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKXkCv4QX6YSk_1m4AurUSiKu5wSD3O2A&callback=initMap">-->
-    <!--</script>-->
   </body>
 </html>
