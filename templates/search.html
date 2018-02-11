@@ -72,10 +72,10 @@
                             center: myLatLng1
                         });
                         data.push({'geometry':{'location':myLatLng1}});
-
                         $.each(data, function (i, item) {
+
                             if((item.geometry.location.lat === lat) && (item.geometry.location.lng === lon)){
-                                var marker2 = new google.maps.Marker({
+                                var marker = new google.maps.Marker({
                                     position: new google.maps.LatLng(item.geometry.location.lat, item.geometry.location.lng),
                                     map: map,
                                     icon: 'https://www.google.com/mapfiles/marker.png'
@@ -87,8 +87,14 @@
                                      icon: 'https://maps.google.com/mapfiles/kml/shapes/parking_lot_maps.png'
                                  });
                             }
+                            if(i == 0){
+                                  var marker = new google.maps.Marker({
+                                        position: new google.maps.LatLng(item.geometry.location.lat, item.geometry.location.lng),
+                                        map: map,
+                                        icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+                                    });
+                            }
 
-    // https://maps.googleapis.com/maps/api/directions/json?origin=38.200488,-85.671079&destination=38.253153,-85.753847&key=AIzaSyCKXkCv4QX6YSk_1m4AurUSiKu5wSD3O2A
                             console.log(item);
                             google.maps.event.addListener(marker, 'click', function() {
                                 $('#spaceLeft').text(item.parkingData.left);
