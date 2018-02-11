@@ -43,7 +43,7 @@ def parking_near_zipcode(latitude, longitude):
         left = int(probData[0])
         prob=probData[1]
         parkingData = {'capacity':pk_capacity, 'left': left, 'prob': prob}
-        filtered_data.append({'geometry':lot['geometry'], 'parkingData': parkingData})
+        filtered_data.append({'geometry':lot['geometry'], 'parkingData': parkingData, 'name':lot['name'], 'address':lot['vicinity']})
     return filtered_data
 
 def main():
