@@ -5,11 +5,11 @@ from api import *
 
 @app.route('/', methods=['GET', 'POST'])
 def read_html():
-    if request.method=='GET':
-        return render_template("index.html")
-    if request.method == 'POST':
-        data = request.form
-        # print(data['lon'], data['lat'])
+    return render_template('search.html')
 
-        parkingdata = parking_near_zipcode(data['lon'], data['lat'])
-        return render_template("search.html", parkingdata=parkingdata)
+@app.route('/parkingData', methods=['GET'])
+def parking_data():
+    if request.method == 'GET':
+        lat= request.args.get('lat')
+        lng= request.args.get('lng')
+        return json.dumps(parking_near_zipcode(lat, lng))
